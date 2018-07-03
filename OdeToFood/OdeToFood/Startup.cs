@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OdeToFood.Services;
 
 namespace OdeToFood
 {
@@ -19,6 +21,7 @@ namespace OdeToFood
         {
             //The service you want to provide and how to instantiate the object
             services.AddSingleton<IGreeter, Greeter>();
+            services.AddScoped<IRestaurantData, InMemoryRestaurant>();
             services.AddMvc();
         }
 
@@ -43,13 +46,18 @@ namespace OdeToFood
             //});
 
             app.UseStaticFiles();
-            app.UseMvcWithDefaultRoute();
+            app.UseMvc(ConfigureRoutes);
 
             app.Run(async (context) =>
             {
                 var greeting = greeter.GetMessageOfTheDay();
                 await context.Response.WriteAsync(greeting);
             });
+        }
+
+        private void ConfigureRoutes(IRouteBuilder routeBuilder)
+        {
+            routeBuilder.MapRoute("Default", "{controller=Home}/{action=Index}/{id?}");
         }
     }
 }
