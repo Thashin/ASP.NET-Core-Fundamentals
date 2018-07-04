@@ -1,0 +1,17 @@
+﻿@using OdeToFood.Models
+@model OdeToFood.Models.Restaurant
+
+<h1>Create</h1>
+<form method ="post">
+    <div>
+    <label asp-for="Name"></label>
+    <input asp-for="Name" /></div>
+    <span asp-validation-for="Name"></span>
+    <div>
+        <label asp-for="cuisineType"></label>
+        <select asp-for="cuisineType" asp-items="@Html.GetEnumSelectList<CuisineType>()"></select>
+   <span asp-validation-for="cuisineType"></span>
+    </div>
+<input type="Submit" name="save" value="Save"/>    
+</form>
+
