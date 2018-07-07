@@ -6,14 +6,22 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OdeToFood.Data;
 using OdeToFood.Services;
 
 namespace OdeToFood
 {
     public class Startup
     {
+        private IConfiguration _configuration;
+
+        public Startup(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         //This is a place to register services for dependency injection
@@ -21,7 +29,10 @@ namespace OdeToFood
         {
             //The service you want to provide and how to instantiate the object
             services.AddSingleton<IGreeter, Greeter>();
-            services.AddSingleton<IRestaurantData, InMemoryRestaurant>();
+            services.AddDbContext<OdeToFoodDbContext>(
+                
+                options => options.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=OdeToFood;Trusted_Connection=True;MultipleActiveResultSets=true"));
+            services.AddScoped<IRestaurantData, SqlRestaurantData>();
             services.AddMvc();
         }
 

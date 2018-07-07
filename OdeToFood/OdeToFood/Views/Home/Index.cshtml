@@ -1,11 +1,10 @@
 ﻿<!--This is the type of model that this page should expect to receive-->
 @model OdeToFood.ViewModels.HomeIndexViewModel
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <title></title>
-</head>
-<body>
+@{ 
+    ViewBag.Title = "Home Page";
+}
+
     <h1>@Model.CurrentMessage</h1>
     <table>
  
@@ -21,6 +20,6 @@
        }
     </table>
     <a asp-action="Create">Add Restaurant</a>
-
-</body>
-</html>
+@section footer{ 
+    @Model.CurrentMessage
+}
